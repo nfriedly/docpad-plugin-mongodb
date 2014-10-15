@@ -1,6 +1,6 @@
-# *EXPERIMENTAL* [MongoDb](https://www.mongodb.org/) Importer Plugin for [DocPad](http://docpad.org)
+# *EXPERIMENTAL* [MongoDB](https://www.mongodb.org/) Importer Plugin for [DocPad](http://docpad.org)
 
-Import MongoDB collections into DocPad collections
+Import MongoDB collections into DocPad collections. Doesn't actually work yet.
 
 
 ## Install

@@ -39,7 +39,6 @@ module.exports = (BasePlugin) ->
     # Fetch our documents from mongodb
     # next(err, mongoDocs)
     fetchMongodbCollection: (collectionConfig, next) ->
-
       MongoClient.connect collectionConfig.connectionString, (err, db) ->
         return next err if err
         db.collection(collectionConfig.collectionName).find().toArray (err, mongoDocs) ->
@@ -53,13 +52,14 @@ module.exports = (BasePlugin) ->
     mongoDocToDocpadDoc: (collectionConfig, mongoDoc) ->
       # Prepare
       docpad = @docpad
+      id = mongoDoc._id.toString();
 
       documentAttributes =
         data: JSON.stringify(mongoDoc, null, '\t')
         meta: _.defaults(
           collectionConfig.meta,
 
-          mongoId: mongoDoc._id
+          mongoId: id
           mongodbCollection: mongoDoc.collectionName
           # todo check for ctime/mtime/date/etc. fields and upgrade them to Date objects (?)
           relativePath: "#{collectionConfig.relativeDirPath or collectionConfig.collectionName}/#{mongoDoc._id}#{collectionConfig.extension}",
@@ -68,7 +68,7 @@ module.exports = (BasePlugin) ->
         )
 
       # Fetch docpad doc (if it already exists in docpad db, otherwise null)
-      document = docpad.getFile({mongoId:mongoDoc._id})
+      document = docpad.getFile({mongoId:id})
 
 
       # Existing document
@@ -84,12 +84,9 @@ module.exports = (BasePlugin) ->
       # Inject document helper
       collectionConfig.injectDocumentHelper?.call(@, document)
 
-      # Return the document
-      return document
-
-    insertDocpadDoc: (document, next) ->
       # Load the document
       document.action 'load', (err) ->
+
         # Check
         return next(err, document)  if err
 
@@ -98,6 +95,10 @@ module.exports = (BasePlugin) ->
 
         # Complete
         next(null, document)
+
+      # Return the document
+      return document
+
 
     # =============================
     # Events
@@ -109,9 +110,6 @@ module.exports = (BasePlugin) ->
       plugin = @
       docpad = @docpad
       config = @getConfig()
-
-      # Imported
-      imported = 0
 
       # Log
       docpad.log('info', "Importing MongoDB collection(s)...")
@@ -131,18 +129,18 @@ module.exports = (BasePlugin) ->
           plugin.fetchMongodbCollection collectionConfig, (err, mongoDocs) ->
             return next(err) if err
 
+            docpad.log 'info', 'db fetched'
+
             docTasks  = new TaskGroup({concurrency:0}).once 'complete', (err) ->
               return next(err) if err
-              docpad.log('debug', "Retrieved #{mongoDocs.length} mongo in collection #{collectionConfig.collectionName}, converting to DocPad docs...")
+              docpad.log('info', "Retrieved #{mongoDocs.length} mongo in collection #{collectionConfig.collectionName}, converting to DocPad docs...")
 
             mongoDocs.forEach (mongoDoc) ->
               docTasks.addTask (next) ->
-                docpadDoc = plugin.mongoDocToDocpadDoc(collectionConfig, mongoDoc)
-                docpad.log('debug', "Inserting #{docpadDoc.get('relativePath')} into DocPad database...")
-                plugin.insertDocpadDoc docpadDoc, next
+                docpad.log('info', "Inserting #{mongoDoc._id} into DocPad database...")
+                plugin.mongoDocToDocpadDoc(collectionConfig, mongoDoc, next)
 
             docTasks.run()
-
       collectionTasks.run()
 
       # Chain
@@ -150,7 +148,7 @@ module.exports = (BasePlugin) ->
 
       # Extend Collections
       # Create our live collection(s) from the docs we inserted into the db
-      extendCollections: ->
+      extendCollections:(opts) ->
         # Prepare
         config = @getConfig()
         docpad = @docpad
@@ -162,7 +160,6 @@ module.exports = (BasePlugin) ->
           # Set the collection
           docpad.setCollection(collectionConfig.collectionName, mongoCollection)
 
-          docpad.log('debug', "Created DocPad collection #{collectionConfig.collectionName}")
-
+          docpad.log('info', "Created DocPad collection #{collectionConfig.collectionName}")
         # Chain
         @

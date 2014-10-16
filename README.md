@@ -2,7 +2,7 @@
 
 <!-- BADGES/ -->
 
-[![Build Status](http://img.shields.io/travis-ci/nfriedly/docpad-plugin-mongodb.png?branch=master)](http://travis-ci.org/nfriedly/docpad-plugin-mongodb "Check this project's build status on TravisCI")
+[![Build Status](https://travis-ci.org/nfriedly/docpad-plugin-mongodb.svg?branch=master)](https://travis-ci.org/nfriedly/docpad-plugin-mongodb)
 [![NPM version](http://badge.fury.io/js/docpad-plugin-mongodb.png)](https://npmjs.org/package/docpad-plugin-mongodb "View this project on NPM")
 [![Dependency Status](https://david-dm.org/nfriedly/docpad-plugin-mongodb.png?theme=shields.io)](https://david-dm.org/nfriedly/docpad-plugin-mongodb)
 [![Development Dependency Status](https://david-dm.org/nfriedly/docpad-plugin-mongodb/dev-status.png?theme=shields.io)](https://david-dm.org/nfriedly/docpad-plugin-mongodb#info=devDependencies)

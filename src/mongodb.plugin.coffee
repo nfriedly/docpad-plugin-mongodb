@@ -33,6 +33,10 @@ module.exports = (BasePlugin) ->
       # Chain
       @
 
+    getBasePath: (collectionConfig) ->
+      "#{collectionConfig.relativeDirPath or collectionConfig.collectionName}/"
+
+
     # Fetch our documents from mongodb
     # next(err, mongoDocs)
     fetchMongodbCollection: (collectionConfig, next) ->
@@ -60,7 +64,7 @@ module.exports = (BasePlugin) ->
           mongoId: id
           mongodbCollection: mongoDoc.collectionName
           # todo check for ctime/mtime/date/etc. fields and upgrade them to Date objects (?)
-          relativePath: "#{collectionConfig.relativeDirPath or collectionConfig.collectionName}/#{id}#{collectionConfig.extension}",
+          relativePath: "#{@getBasePath(collectionConfig)}#{id}#{collectionConfig.extension}",
 
           mongoDoc
         )
@@ -145,7 +149,16 @@ module.exports = (BasePlugin) ->
 
       config.collections.forEach (collectionConfig) ->
         collectionTasks.addTask (complete) ->
-          plugin.addMongoCollectionToDb(collectionConfig, complete)
+          plugin.addMongoCollectionToDb collectionConfig, (err) ->
+            complete(err) if err
+
+            docs = docpad.getFilesAtPath plugin.getBasePath collectionConfig
+
+            # Set the collection
+            docpad.setCollection(collectionConfig.collectionName, docs)
+
+            docpad.log('info', "Created DocPad collection #{collectionConfig.collectionName}")
+            complete()
       collectionTasks.run()
 
       # Chain
@@ -155,15 +168,17 @@ module.exports = (BasePlugin) ->
       # Create our live collection(s) from the docs we inserted into the db
       extendCollections:(opts) ->
         # Prepare
+        plugin = @
         config = @getConfig()
         docpad = @docpad
 
         config.collections.forEach (collectionConfig) ->
           # Create the collection
-          mongoCollection = docpad.getFiles({mongodbCollection: collectionConfig.collectionName}, collectionConfig.sortBy)
+          # todo: make this work on the mongoCollection param instead of the file path
+          docs = docpad.getFilesAtPath plugin.getBasePath collectionConfig
 
           # Set the collection
-          docpad.setCollection(collectionConfig.collectionName, mongoCollection)
+          docpad.setCollection(collectionConfig.collectionName, docs)
 
           docpad.log('info', "Created DocPad collection #{collectionConfig.collectionName}")
 

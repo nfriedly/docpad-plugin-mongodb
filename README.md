@@ -1,7 +1,8 @@
 # *EXPERIMENTAL* [MongoDB](https://www.mongodb.org/) Importer Plugin for [DocPad](http://docpad.org)
 
-Import MongoDB collections into DocPad collections. Doesn't actually work yet.
+Import MongoDB collections into DocPad collections.
 
+Inspired by https://github.com/simonh1000/docpad-plugin-mongo and based on https://github.com/docpad/docpad-plugin-tumblr/
 
 ## Install
 

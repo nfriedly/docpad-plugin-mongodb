@@ -83,7 +83,6 @@ module.exports = (BasePlugin) ->
 
       # Load the document
       document.action 'load', (err) ->
-
         # Check
         return next(err, document)  if err
 
@@ -96,6 +95,28 @@ module.exports = (BasePlugin) ->
       # Return the document
       return document
 
+    addMongoCollectionToDb: (collectionConfig, next) ->
+      docpad = @docpad
+      plugin = @
+      plugin.fetchMongodbCollection collectionConfig, (err, mongoDocs) ->
+        return next(err) if err
+
+        docpad.log('debug', "Retrieved #{mongoDocs.length} mongo in collection #{collectionConfig.collectionName}, converting to DocPad docs...")
+
+        docTasks  = new TaskGroup({concurrency:0}).done (err) ->
+          return next(err) if err
+          docpad.log('info', "Converted #{mongoDocs.length} mongo documents into DocPad docs...")
+          next()
+
+        mongoDocs.forEach (mongoDoc) ->
+          docTasks.addTask (complete) ->
+            docpad.log('debug', "Inserting #{mongoDoc._id} into DocPad database...")
+            plugin.mongoDocToDocpadDoc collectionConfig, mongoDoc, (err) ->
+              return complete(err) if err
+              docpad.log('debug', 'inserted')
+              complete()
+
+        docTasks.run()
 
     # =============================
     # Events
@@ -112,7 +133,7 @@ module.exports = (BasePlugin) ->
       docpad.log('info', "Importing MongoDB collection(s)...")
 
       # concurrency:0 means run all tasks simultaneously
-      collectionTasks = new TaskGroup({concurrency:0}).once 'complete', (err) ->
+      collectionTasks = new TaskGroup({concurrency:0}).done (err) ->
         return next(err) if err
 
         # Log
@@ -122,23 +143,8 @@ module.exports = (BasePlugin) ->
         return next()
 
       config.collections.forEach (collectionConfig) ->
-        collectionTasks.addTask (next) ->
-          plugin.fetchMongodbCollection collectionConfig, (err, mongoDocs) ->
-            return next(err) if err
-
-            docpad.log 'info', 'db fetched'
-
-            docTasks  = new TaskGroup({concurrency:0}).once 'complete', (err) ->
-              return next(err) if err
-              docpad.log('info', "Retrieved #{mongoDocs.length} mongo in collection #{collectionConfig.collectionName}, converting to DocPad docs...")
-              next()
-
-            mongoDocs.forEach (mongoDoc) ->
-              docTasks.addTask (next) ->
-                docpad.log('info', "Inserting #{mongoDoc._id} into DocPad database...")
-                plugin.mongoDocToDocpadDoc(collectionConfig, mongoDoc, next)
-
-            docTasks.run()
+        collectionTasks.addTask (complete) ->
+          plugin.addMongoCollectionToDb(collectionConfig, complete)
       collectionTasks.run()
 
       # Chain

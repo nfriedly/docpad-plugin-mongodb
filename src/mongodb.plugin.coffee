@@ -46,7 +46,7 @@ module.exports = (BasePlugin) ->
 
     # convert JSON doc from mongodb to DocPad-style document/file model
     # "body" of docpad doc is a JSON string of the mongo doc, meta includes all data in mongo doc
-    mongoDocToDocpadDoc: (collectionConfig, mongoDoc) ->
+    mongoDocToDocpadDoc: (collectionConfig, mongoDoc, next) ->
       # Prepare
       docpad = @docpad
       id = mongoDoc._id.toString();

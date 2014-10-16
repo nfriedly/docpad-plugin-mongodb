@@ -54,12 +54,13 @@ module.exports = (BasePlugin) ->
       documentAttributes =
         data: JSON.stringify(mongoDoc, null, '\t')
         meta: _.defaults(
+          {},
           collectionConfig.meta,
 
           mongoId: id
           mongodbCollection: mongoDoc.collectionName
           # todo check for ctime/mtime/date/etc. fields and upgrade them to Date objects (?)
-          relativePath: "#{collectionConfig.relativeDirPath or collectionConfig.collectionName}/#{mongoDoc._id}#{collectionConfig.extension}",
+          relativePath: "#{collectionConfig.relativeDirPath or collectionConfig.collectionName}/#{id}#{collectionConfig.extension}",
 
           mongoDoc
         )

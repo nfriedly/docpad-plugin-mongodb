@@ -21,9 +21,6 @@ module.exports = (BasePlugin) ->
         meta: {}
       collections: []
 
-    # =============================
-    # Events
-
     # DocPad v6.24.0+ Compatible
     # Configuration
     setConfig: ->
@@ -73,7 +70,7 @@ module.exports = (BasePlugin) ->
 
       # Existing document
       if document?
-        # todo: check mtime (if avaliable) and return now docs that haven't changed
+        # todo: check mtime (if available) and return now for docs that haven't changed
         document.set(documentAttributes)
 
         # New Document
@@ -134,6 +131,7 @@ module.exports = (BasePlugin) ->
             docTasks  = new TaskGroup({concurrency:0}).once 'complete', (err) ->
               return next(err) if err
               docpad.log('info', "Retrieved #{mongoDocs.length} mongo in collection #{collectionConfig.collectionName}, converting to DocPad docs...")
+              next()
 
             mongoDocs.forEach (mongoDoc) ->
               docTasks.addTask (next) ->
@@ -161,5 +159,6 @@ module.exports = (BasePlugin) ->
           docpad.setCollection(collectionConfig.collectionName, mongoCollection)
 
           docpad.log('info', "Created DocPad collection #{collectionConfig.collectionName}")
+
         # Chain
         @

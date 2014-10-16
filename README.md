@@ -1,5 +1,15 @@
 # *EXPERIMENTAL* [MongoDB](https://www.mongodb.org/) Importer Plugin for [DocPad](http://docpad.org)
 
+<!-- BADGES/ -->
+
+[![Build Status](http://img.shields.io/travis-ci/nfriedly/docpad-plugin-mongodb.png?branch=master)](http://travis-ci.org/nfriedly/docpad-plugin-mongodb "Check this project's build status on TravisCI")
+[![NPM version](http://badge.fury.io/js/docpad-plugin-mongodb.png)](https://npmjs.org/package/docpad-plugin-mongodb "View this project on NPM")
+[![Dependency Status](https://david-dm.org/nfriedly/docpad-plugin-mongodb.png?theme=shields.io)](https://david-dm.org/nfriedly/docpad-plugin-mongodb)
+[![Development Dependency Status](https://david-dm.org/nfriedly/docpad-plugin-mongodb/dev-status.png?theme=shields.io)](https://david-dm.org/nfriedly/docpad-plugin-mongodb#info=devDependencies)
+[![Gittip donate button](http://img.shields.io/gittip/nfriedly.png)](https://www.gittip.com/nfriedly/ "Donate weekly to this project using Gittip")
+
+<!-- /BADGES -->
+
 Import MongoDB collections into DocPad collections.
 
 Inspired by https://github.com/simonh1000/docpad-plugin-mongo and based on https://github.com/docpad/docpad-plugin-tumblr/

@@ -63,7 +63,7 @@ module.exports = (BasePlugin) ->
           collectionConfig.meta,
 
           mongoId: id
-          mongodbCollection: mongoDoc.collectionName
+          mongodbCollection: collectionConfig.collectionName
           # todo check for ctime/mtime/date/etc. fields and upgrade them to Date objects (?)
           relativePath: "#{@getBasePath(collectionConfig)}#{id}#{collectionConfig.extension}",
 
@@ -153,35 +153,14 @@ module.exports = (BasePlugin) ->
           plugin.addMongoCollectionToDb collectionConfig, (err) ->
             complete(err) if err
 
-            docs = docpad.getFilesAtPath plugin.getBasePath(collectionConfig), collectionConfig.sort
+            docs = docpad.getFiles {mongodbCollection: collectionConfig.collectionName}, collectionConfig.sort
 
             # Set the collection
             docpad.setCollection(collectionConfig.collectionName, docs)
 
-            docpad.log('info', "Created DocPad collection #{collectionConfig.collectionName}")
+            docpad.log('info', "populateCollections: Created DocPad collection #{collectionConfig.collectionName} (#{docs.length} documents)")
             complete()
       collectionTasks.run()
 
       # Chain
       @
-
-      # Extend Collections
-      # Create our live collection(s) from the docs we inserted into the db
-      extendCollections:(opts) ->
-        # Prepare
-        plugin = @
-        config = @getConfig()
-        docpad = @docpad
-
-        config.collections.forEach (collectionConfig) ->
-          # Create the collection
-          # todo: make this work on the mongoCollection param instead of the file path
-          docs = docpad.getFilesAtPath plugin.getBasePath(collectionConfig), collectionConfig.sort
-
-          # Set the collection
-          docpad.setCollection(collectionConfig.collectionName, docs)
-
-          docpad.log('info', "Created DocPad collection #{collectionConfig.collectionName}")
-
-        # Chain
-        @

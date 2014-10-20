@@ -35,6 +35,7 @@ plugins:
       collectionName: "posts"
       relativeDirPath: "blog"
       extension: ".html"
+      sort: date: 1 # newest first
       meta:
         layout: "blogpost"
     ]
@@ -54,6 +55,7 @@ plugins:
         collectionName: "posts"
         relativeDirPath: "blog"
         extension: '.html.eco'
+        sort: date: 1 # newest first
         injectDocumentHelper: (document) ->
           document.setMeta(
             layout: 'default'
@@ -67,6 +69,7 @@ plugins:
       {
         collectionName: "comments"
         extension: '.html.markup'
+        sort: date: -1 #oldest first
         meta:
           write: false
       },
@@ -110,6 +113,10 @@ injectDocumentHelper: (document) ->
 			"""
   )
 ```
+
+The `sort` field is [passed as the comparator to Query Engine](https://learn.bevry.me/queryengine/guide#querying) which tries it as a
+[MongoDB-style sort](http://docs.mongodb.org/manual/reference/method/cursor.sort/) first and then a
+[Backbone.js comparator](http://documentcloud.github.io/backbone/#Collection-comparator) second.
 
 ### Creating a File Listing
 

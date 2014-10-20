@@ -18,6 +18,7 @@ module.exports = (BasePlugin) ->
         extension: ".json"
         injectDocumentHelper: null
         collectionName: "mongodb"
+        sort: null # http://documentcloud.github.io/backbone/#Collection-comparator
         meta: {}
       collections: []
 
@@ -152,7 +153,7 @@ module.exports = (BasePlugin) ->
           plugin.addMongoCollectionToDb collectionConfig, (err) ->
             complete(err) if err
 
-            docs = docpad.getFilesAtPath plugin.getBasePath collectionConfig
+            docs = docpad.getFilesAtPath plugin.getBasePath(collectionConfig), collectionConfig.sort
 
             # Set the collection
             docpad.setCollection(collectionConfig.collectionName, docs)
@@ -175,7 +176,7 @@ module.exports = (BasePlugin) ->
         config.collections.forEach (collectionConfig) ->
           # Create the collection
           # todo: make this work on the mongoCollection param instead of the file path
-          docs = docpad.getFilesAtPath plugin.getBasePath collectionConfig
+          docs = docpad.getFilesAtPath plugin.getBasePath(collectionConfig), collectionConfig.sort
 
           # Set the collection
           docpad.setCollection(collectionConfig.collectionName, docs)

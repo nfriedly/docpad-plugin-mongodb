@@ -65,9 +65,10 @@ module.exports = (BasePlugin) ->
           mongoId: id
           mongodbCollection: collectionConfig.collectionName
           # todo check for ctime/mtime/date/etc. fields and upgrade them to Date objects (?)
-          relativePath: "#{@getBasePath(collectionConfig)}#{id}#{collectionConfig.extension}",
+          relativePath: "#{@getBasePath(collectionConfig)}#{id}#{collectionConfig.extension}"
+          original: mongoDoc, # this gives the original document without DocPad overwriting certain fields
 
-          mongoDoc
+          mongoDoc # this puts all of the document attributes into the metadata, but some will be overwritten
         )
 
       # Fetch docpad doc (if it already exists in docpad db, otherwise null)
@@ -111,7 +112,7 @@ module.exports = (BasePlugin) ->
 
         docTasks  = new TaskGroup({concurrency:0}).done (err) ->
           return next(err) if err
-          docpad.log('info', "Converted #{mongoDocs.length} mongo documents into DocPad docs...")
+          docpad.log('debug', "Converted #{mongoDocs.length} mongo documents into DocPad docs...")
           next()
 
         mongoDocs.forEach (mongoDoc) ->
@@ -158,7 +159,7 @@ module.exports = (BasePlugin) ->
             # Set the collection
             docpad.setCollection(collectionConfig.collectionName, docs)
 
-            docpad.log('info', "populateCollections: Created DocPad collection #{collectionConfig.collectionName} (#{docs.length} documents)")
+            docpad.log('info', "Created DocPad collection \"#{collectionConfig.collectionName}\" with #{docs.length} documents from MongoDB")
             complete()
       collectionTasks.run()
 

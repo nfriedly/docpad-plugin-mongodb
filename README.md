@@ -158,7 +158,7 @@ As imported documents are just like normal documents, you can also list them jus
 
 Licensed under the incredibly [permissive](http://en.wikipedia.org/wiki/Permissive_free_software_licence) [MIT license](http://creativecommons.org/licenses/MIT/)
 
-Copyright &copy; Bevry Pty Ltd <us@bevry.me> (http://bevry.me)
+Copyright &copy; Nathan Friedly (http://nfriedly.com)
 
 <!-- /LICENSE -->
 

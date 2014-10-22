@@ -25,7 +25,7 @@ docpad install mongodb
 
 ### Simple example
 
-Add the following to your [docpad configuration file](http://docpad.org/docs/config) via:
+Add the following to your [docpad configuration file](http://docpad.org/docs/config):
 
 ``` coffee
 plugins:
@@ -84,7 +84,7 @@ plugins:
 
 ### Config details:
 
-Each configuration object in `collections` inherits defalt values from `collectionDefaults` and then from the built-in defaults:
+Each configuration object in `collections` inherits default values from `collectionDefaults` and then from the built-in defaults:
 
 ```coffee
   connectionString: process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || "mongodb://localhost/localdev"
@@ -92,15 +92,20 @@ Each configuration object in `collections` inherits defalt values from `collecti
   extension: ".json"
   injectDocumentHelper: null
   collectionName: "mongodb"
+  sort: null
   meta: {}
 ```
 
 The default directory for where the imported documents will go inside is the collectionName.
 You can override this using the `relativeDirPath` plugin config option.
 
-The default content for the imported documents is JSON data. You can can customise this with the `injectDocumentHelper` plugin configuration option which is a function that takes in a single [Document Model](https://github.com/bevry/docpad/blob/master/src/lib/models/document.coffee).
+The default content for the imported documents is JSON data. You can can customise this with the `injectDocumentHelper`
+plugin configuration option which is a function that takes in a single [Document Model](https://github.com/bevry/docpad/blob/master/src/lib/models/document.coffee).
 
-If you would like to render a template, add a layout, and change the extension, you can this with the [eco](https://github.com/docpad/docpad-plugin-eco) and [partials](https://github.com/docpad/docpad-plugin-partials) plugins and following collection configuration:
+If you would like to render a template, add a layout, and change the extension, you can do it via the `meta` configuration
+option or you can get fancy and do this with (for example) the
+[eco](https://github.com/docpad/docpad-plugin-eco) and [partials](https://github.com/docpad/docpad-plugin-partials)
+plugins and following collection configuration:
 
 ``` coffee
 extension: '.html.eco'

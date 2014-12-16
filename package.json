@@ -1,6 +1,6 @@
 {
   "name": "docpad-plugin-mongodb",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Import your mongodb collections to DocPad collections",
   "homepage": "https://github.com/docpad/docpad-plugin-mongodb/",
   "license": {

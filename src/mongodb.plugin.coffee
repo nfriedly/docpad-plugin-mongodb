@@ -20,6 +20,8 @@ module.exports = (BasePlugin) ->
         collectionName: "mongodb"
         sort: null # http://documentcloud.github.io/backbone/#Collection-comparator
         meta: {}
+        query: {}
+        docpadCollectionName: null # defaults to collectionName
       collections: []
 
     # DocPad v6.24.0+ Compatible
@@ -43,7 +45,7 @@ module.exports = (BasePlugin) ->
     fetchMongodbCollection: (collectionConfig, next) ->
       MongoClient.connect collectionConfig.connectionString, (err, db) ->
         return next err if err
-        db.collection(collectionConfig.collectionName).find().toArray (err, mongoDocs) ->
+        db.collection(collectionConfig.collectionName).find(collectionConfig.query).toArray (err, mongoDocs) ->
           db.close()
           next err, mongoDocs
       # Chain
@@ -157,7 +159,7 @@ module.exports = (BasePlugin) ->
             docs = docpad.getFiles {mongodbCollection: collectionConfig.collectionName}, collectionConfig.sort
 
             # Set the collection
-            docpad.setCollection(collectionConfig.collectionName, docs)
+            docpad.setCollection(collectionConfig.docpadCollectionName or collectionConfig.collectionName, docs)
 
             docpad.log('info', "Created DocPad collection \"#{collectionConfig.collectionName}\" with #{docs.length} documents from MongoDB")
             complete()

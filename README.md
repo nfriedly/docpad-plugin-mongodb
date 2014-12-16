@@ -1,12 +1,12 @@
-# *EXPERIMENTAL* [MongoDB](https://www.mongodb.org/) Importer Plugin for [DocPad](http://docpad.org)
+[MongoDB](https://www.mongodb.org/) Importer Plugin for [DocPad](http://docpad.org)
 
 <!-- BADGES/ -->
 
-[![Build Status](https://travis-ci.org/nfriedly/docpad-plugin-mongodb.svg?branch=master)](https://travis-ci.org/nfriedly/docpad-plugin-mongodb)
-[![NPM version](http://badge.fury.io/js/docpad-plugin-mongodb.png)](https://npmjs.org/package/docpad-plugin-mongodb "View this project on NPM")
-[![Dependency Status](https://david-dm.org/nfriedly/docpad-plugin-mongodb.png?theme=shields.io)](https://david-dm.org/nfriedly/docpad-plugin-mongodb)
-[![Development Dependency Status](https://david-dm.org/nfriedly/docpad-plugin-mongodb/dev-status.png?theme=shields.io)](https://david-dm.org/nfriedly/docpad-plugin-mongodb#info=devDependencies)
-[![Gittip donate button](http://img.shields.io/gittip/nfriedly.png)](https://www.gittip.com/nfriedly/ "Donate weekly to this project using Gittip")
+[![Build Status](//travis-ci.org/nfriedly/docpad-plugin-mongodb.svg?branch=master)](https://travis-ci.org/nfriedly/docpad-plugin-mongodb)
+[![NPM version](//badge.fury.io/js/docpad-plugin-mongodb.png)](https://npmjs.org/package/docpad-plugin-mongodb "View this project on NPM")
+[![Dependency Status](//david-dm.org/nfriedly/docpad-plugin-mongodb.png?theme=shields.io)](https://david-dm.org/nfriedly/docpad-plugin-mongodb)
+[![Development Dependency Status](//david-dm.org/nfriedly/docpad-plugin-mongodb/dev-status.png?theme=shields.io)](https://david-dm.org/nfriedly/docpad-plugin-mongodb#info=devDependencies)
+[![Gittip donate button](//img.shields.io/gittip/nfriedly.png)](https://www.gittip.com/nfriedly/ "Donate weekly to this project using Gittip")
 
 <!-- /BADGES -->
 
@@ -70,6 +70,7 @@ plugins:
         collectionName: "comments"
         extension: '.html.markup'
         sort: date: -1 #oldest first
+        query: {isSpam: false}
         meta:
           write: false
       },
@@ -77,6 +78,7 @@ plugins:
       {
         connectionString: "mongodb://localhost/stats"
         collectionName: "stats"
+        docpadCollectionName: "websiteStats"
         extension: ".json"
       }
     ]
@@ -87,13 +89,15 @@ plugins:
 Each configuration object in `collections` inherits default values from `collectionDefaults` and then from the built-in defaults:
 
 ```coffee
-  connectionString: process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || "mongodb://localhost/localdev"
-  relativeDirPath: null # defaults to collectionName
-  extension: ".json"
-  injectDocumentHelper: null
-  collectionName: "mongodb"
-  sort: null
-  meta: {}
+    connectionString: process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || "mongodb://localhost/localdev"
+    relativeDirPath: null # defaults to collectionName
+    extension: ".json"
+    injectDocumentHelper: null
+    collectionName: "mongodb"
+    sort: null # http://documentcloud.github.io/backbone/#Collection-comparator
+    meta: {}
+    query: {}
+    docpadCollectionName: null # defaults to collectionName
 ```
 
 The default directory for where the imported documents will go inside is the collectionName.
@@ -122,6 +126,8 @@ injectDocumentHelper: (document) ->
 The `sort` field is [passed as the comparator to Query Engine](https://learn.bevry.me/queryengine/guide#querying) which tries it as a
 [MongoDB-style sort](http://docs.mongodb.org/manual/reference/method/cursor.sort/) first and then a
 [Backbone.js comparator](http://documentcloud.github.io/backbone/#Collection-comparator) second.
+
+The `query` is a standard [MongoDB query](http://docs.mongodb.org/manual/tutorial/query-documents/) and can be used to filter the documents before importing them into your DocPad database.
 
 ### Creating a File Listing
 

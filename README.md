@@ -92,12 +92,12 @@ Each configuration object in `collections` inherits default values from `collect
     connectionString: process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || "mongodb://localhost/localdev"
     relativeDirPath: null # defaults to collectionName
     extension: ".json"
-    injectDocumentHelper: null
-    collectionName: "mongodb"
-    sort: null # http://documentcloud.github.io/backbone/#Collection-comparator
-    meta: {}
-    query: {}
+    injectDocumentHelper: null # function to format documents
+    collectionName: "mongodb" # name of the collection in mongodb
     docpadCollectionName: null # defaults to collectionName
+    sort: null # http://documentcloud.github.io/backbone/#Collection-comparator
+    meta: {} # automatically added to each document
+    query: {} # optional MongoDB query to select a sub-set of the documents in the collection
 ```
 
 The default directory for where the imported documents will go inside is the collectionName.
@@ -142,30 +142,14 @@ As imported documents are just like normal documents, you can also list them jus
 <% end %></ul>
 ```
 
-<!-- HISTORY/ -->
+## MIT License
 
-## History
-[Discover the change history by heading on over to the `HISTORY.md` file.](https://github.com/docpad/docpad-plugin-tumblr/blob/master/HISTORY.md#files)
+Copyright (c) 20154 Nathan Friedly  - http://nfriedly.com/
 
-<!-- /HISTORY -->
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-<!-- CONTRIBUTE/ -->
-
-## Contribute
-
-[Discover how you can contribute by heading on over to the `CONTRIBUTING.md` file.](https://github.com/docpad/docpad-plugin-tumblr/blob/master/CONTRIBUTING.md#files)
-
-<!-- /CONTRIBUTE -->
-
-<!-- LICENSE/ -->
-
-## License
-
-Licensed under the incredibly [permissive](http://en.wikipedia.org/wiki/Permissive_free_software_licence) [MIT license](http://creativecommons.org/licenses/MIT/)
-
-Copyright &copy; Nathan Friedly (http://nfriedly.com)
-
-<!-- /LICENSE -->
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 

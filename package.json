@@ -2,7 +2,7 @@
   "name": "docpad-plugin-mongodb",
   "version": "2.3.0",
   "description": "Import your mongodb collections to DocPad collections",
-  "homepage": "https://github.com/docpad/docpad-plugin-mongodb/",
+  "homepage": "https://github.com/nfriedly/docpad-plugin-mongodb/",
   "license": {
     "type": "MIT"
   },
@@ -19,11 +19,11 @@
   ],
   "author": "Nathan Friedly (http://nfriedly.com)",
   "bugs": {
-    "url": "https://github.com/docpad/docpad-plugin-mongodb/issues"
+    "url": "https://github.com/nfriedly/docpad-plugin-mongodb/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/docpad/docpad-plugin-mongodb.git"
+    "url": "https://github.com/nfriedly/docpad-plugin-mongodb.git"
   },
   "engines": {
     "node": ">=0.4"

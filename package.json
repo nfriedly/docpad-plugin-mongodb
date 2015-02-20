@@ -29,8 +29,8 @@
     "node": ">=0.4"
   },
   "dependencies": {
-    "lodash": "^3.1.0",
-    "mongodb": "^1.4.19",
+    "lodash": "^3.3.0",
+    "mongodb": ">1.4.19 <3",
     "taskgroup": "^4.0.5"
   },
   "peerDependencies": {
@@ -38,8 +38,11 @@
   },
   "devDependencies": {
     "cake": "^0.1.1",
+    "chai": "^2.0.0",
     "coffee-script": "~1.8.0",
     "docpad": ">=6.46 <7",
+    "joe": "^1.6.0",
+    "joe-reporter-console": "^1.2.1",
     "projectz": "~0.3.13"
   },
   "main": "./out/mongodb.plugin.js",

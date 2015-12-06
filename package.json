@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "lodash": "^3.3.0",
-    "mongodb": ">1.4.19 <3",
+    "mongodb": ">2.1.0",
     "taskgroup": "^4.0.5"
   },
   "peerDependencies": {

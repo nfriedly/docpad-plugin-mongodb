@@ -31,7 +31,7 @@
   "dependencies": {
     "lodash": "^4.0.0",
     "mongodb": ">=2.2.0",
-    "taskgroup": "^4.0.5"
+    "taskgroup": "^5.0.1"
   },
   "peerDependencies": {
     "docpad": ">=6.46 <7"

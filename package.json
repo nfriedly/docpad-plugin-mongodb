@@ -26,7 +26,7 @@
     "url": "https://github.com/nfriedly/docpad-plugin-mongodb.git"
   },
   "engines": {
-    "node": ">=0.4"
+    "node": ">= 4"
   },
   "dependencies": {
     "lodash": "^4.0.0",
